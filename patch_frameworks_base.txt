@@ -1,0 +1,52 @@
+diff --git a/Android.mk b/Android.mk
+index dfcfa2b..7971b4a 100644
+--- a/Android.mk
++++ b/Android.mk
+@@ -247,7 +247,6 @@ LOCAL_SRC_FILES += \
+ 	core/java/android/nfc/INfcCardEmulation.aidl \
+ 	core/java/android/nfc/INfcFCardEmulation.aidl \
+ 	core/java/android/nfc/INfcUnlockHandler.aidl \
+-	core/java/android/nfc/INfcDta.aidl \
+ 	core/java/android/nfc/ITagRemovedCallback.aidl \
+ 	core/java/android/os/IBatteryPropertiesListener.aidl \
+ 	core/java/android/os/IBatteryPropertiesRegistrar.aidl \
+diff --git a/core/res/res/values/attrs.xml b/core/res/res/values/attrs.xml
+old mode 100644
+new mode 100755
+index 9aca2de..2db132e
+--- a/core/res/res/values/attrs.xml
++++ b/core/res/res/values/attrs.xml
+@@ -3615,6 +3615,25 @@
+         <attr name="name" />
+     </declare-styleable>
+ 
++    <!-- Specify one or more <code>apdu-pattern-group</code> elements inside a
++         <code>offhost-apdu-service</code>
++         element to define a group of APDU Pattern that
++         your service can handle.-->
++    <declare-styleable name="ApduPatternGroup">
++        <!-- Short description of what the ApduPatternGroup implements. This attribute is mandatory.-->
++        <attr name="description" />
++    </declare-styleable>
++
++    <!-- Specify one or more <code>apdu-pattern-filter</code> elements inside a
++         <code>apdu-pattern-group</code> element to specify an APDU Pattern
++         your service can handle. -->
++    <declare-styleable name="ApduPatternFilter">
++        <!-- The APDU Pattern Group. This attribute is mandatory. -->
++        <attr name="reference_data" format="string" />
++        <attr name="apdupattern_mask" format="string" />
++        <attr name="description" />
++    </declare-styleable>
++    
+     <!-- Use <code>host-nfcf-service</code> as the root tag of the XML resource that
+          describes an {@link android.nfc.cardemulation.HostNfcFService} service, which
+          is referenced from its {@link android.nfc.cardemulation.HostNfcFService#SERVICE_META_DATA}
+@@ -3645,7 +3664,6 @@
+          <code>host-nfcf-service</code> element to specify a LF_T3T_PMM -->
+     <declare-styleable name="T3tPmmFilter">
+         <attr name="name" />
+-
+     </declare-styleable>
+ 
+     <declare-styleable name="ActionMenuItemView">

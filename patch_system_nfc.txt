@@ -1,0 +1,73 @@
+diff --git a/halimpl/pn54x/configs/NxpNfcCapability.cpp b/halimpl/pn54x/configs/NxpNfcCapability.cpp
+old mode 100644
+new mode 100755
+index 869a55c..0474c29
+--- a/halimpl/pn54x/configs/NxpNfcCapability.cpp
++++ b/halimpl/pn54x/configs/NxpNfcCapability.cpp
+@@ -63,6 +63,7 @@ tNFC_chipType capability::processChipType(uint8_t* msg, uint16_t msg_len) {
+ 
+             case 0x28 :
+             case 0x48 : //NQ210
++            case 0x88 : //PN7150
+                 chipType = pn548C2;
+                 break;
+ 
+diff --git a/halimpl/pn54x/hal/phNxpNciHal_ext.c b/halimpl/pn54x/hal/phNxpNciHal_ext.c
+old mode 100644
+new mode 100755
+index 6e0c4f1..d860bf2
+--- a/halimpl/pn54x/hal/phNxpNciHal_ext.c
++++ b/halimpl/pn54x/hal/phNxpNciHal_ext.c
+@@ -912,29 +912,29 @@ NFCSTATUS phNxpNciHal_write_ext(uint16_t* cmd_len, uint8_t* p_cmd_data,
+     }
+   }
+ 
+-  if ((nfcFL.chipType == pn548C2) &&
+-          (p_cmd_data[0] == 0x20 && p_cmd_data[1] == 0x02)) {
+-      uint8_t temp;
+-      uint8_t* p = p_cmd_data + 4;
+-      uint8_t* end = p_cmd_data + *cmd_len;
+-      while (p < end) {
+-          if (*p == 0x53)  // LF_T3T_FLAGS
+-          {
+-              NXPLOG_NCIHAL_D("> Going through workaround - LF_T3T_FLAGS swap");
+-              temp = *(p + 3);
+-              *(p + 3) = *(p + 2);
+-              *(p + 2) = temp;
+-              NXPLOG_NCIHAL_D("> Going through workaround - LF_T3T_FLAGS - End");
+-              status = NFCSTATUS_SUCCESS;
+-              break;
+-          }
+-          if (*p == 0xA0) {
+-              p += *(p + 2) + 3;
+-          } else {
+-              p += *(p + 1) + 2;
+-          }
+-      }
+-  }
++  // if ((nfcFL.chipType == pn548C2) &&
++          // (p_cmd_data[0] == 0x20 && p_cmd_data[1] == 0x02)) {
++      // uint8_t temp;
++      // uint8_t* p = p_cmd_data + 4;
++      // uint8_t* end = p_cmd_data + *cmd_len;
++      // while (p < end) {
++          // if (*p == 0x53)  // LF_T3T_FLAGS
++          // {
++              // NXPLOG_NCIHAL_D("> Going through workaround - LF_T3T_FLAGS swap");
++              // temp = *(p + 3);
++              // *(p + 3) = *(p + 2);
++              // *(p + 2) = temp;
++              // NXPLOG_NCIHAL_D("> Going through workaround - LF_T3T_FLAGS - End");
++              // status = NFCSTATUS_SUCCESS;
++              // break;
++          // }
++          // if (*p == 0xA0) {
++              // p += *(p + 2) + 3;
++          // } else {
++              // p += *(p + 1) + 2;
++          // }
++      // }
++  // }
+ 
+   return status;
+ }

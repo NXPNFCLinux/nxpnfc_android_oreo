@@ -1,0 +1,92 @@
+diff --git a/private/file_contexts b/private/file_contexts
+old mode 100644
+new mode 100755
+index 5369758..406eed4
+--- a/private/file_contexts
++++ b/private/file_contexts
+@@ -262,6 +262,7 @@
+ /system/bin/webview_zygote64     u:object_r:webview_zygote_exec:s0
+ /system/bin/virtual_touchpad     u:object_r:virtual_touchpad_exec:s0
+ /system/bin/hw/android\.hidl\.allocator@1\.0-service          u:object_r:hal_allocator_default_exec:s0
++/system/bin/hw/vendor\.nxp\.nxpnfc@1\.0-service               u:object_r:hal_nfc_default_exec:s0
+ /system/etc/selinux/mapping/[0-9]+\.[0-9]+\.cil       u:object_r:sepolicy_file:s0
+ /system/etc/selinux/plat_mac_permissions\.xml u:object_r:mac_perms_file:s0
+ /system/etc/selinux/plat_property_contexts  u:object_r:property_contexts_file:s0
+@@ -401,6 +402,10 @@
+ # Bootchart data
+ /data/bootchart(/.*)?		u:object_r:bootchart_data_file:s0
+ 
++# Nfc data
++/data/nfc(/.*)?        u:object_r:nfc_data_file:s0
++/data/vendor/nfc(/.*)? u:object_r:nfc_vendor_data_file:s0
++
+ #############################
+ # Expanded data files
+ #
+diff --git a/private/nfc.te b/private/nfc.te
+index b41558c..19beebe 100644
+--- a/private/nfc.te
++++ b/private/nfc.te
+@@ -11,6 +11,7 @@ hal_client_domain(nfc, hal_nfc)
+ # Data file accesses.
+ allow nfc nfc_data_file:dir create_dir_perms;
+ allow nfc nfc_data_file:notdevfile_class_set create_file_perms;
++allow nfc nfc_data_file:dir { search read write create remove_name};
+ 
+ # SoundPool loading and playback
+ allow nfc audioserver_service:service_manager find;
+@@ -28,6 +29,9 @@ allow nfc vr_manager_service:service_manager find;
+ 
+ set_prop(nfc, nfc_prop);
+ 
++#============= nfc ==============
++allow nfc default_android_hwservice:hwservice_manager find;
++
+ # already open bugreport file descriptors may be shared with
+ # the nfc process, from a file in
+ # /data/data/com.android.shell/files/bugreports/bugreport-*.
+diff --git a/private/platform_app.te b/private/platform_app.te
+old mode 100644
+new mode 100755
+index 2aa7dc9..732f8d0
+--- a/private/platform_app.te
++++ b/private/platform_app.te
+@@ -56,6 +56,7 @@ allow platform_app timezone_service:service_manager find;
+ allow platform_app app_api_service:service_manager find;
+ allow platform_app system_api_service:service_manager find;
+ allow platform_app vr_manager_service:service_manager find;
++allow platform_app nfc_service:service_manager find;
+ 
+ # Access to /data/preloads
+ allow platform_app preloads_data_file:file r_file_perms;
+diff --git a/public/domain.te b/public/domain.te
+index f5c72cc..10cfb1f 100644
+--- a/public/domain.te
++++ b/public/domain.te
+@@ -431,7 +431,7 @@ neverallow { domain -recovery } contextmount_type:dir_file_class_set
+ # from service name to service_type are defined in {,hw,vnd}service_contexts.
+ neverallow * default_android_service:service_manager add;
+ neverallow * default_android_vndservice:service_manager { add find };
+-neverallow * default_android_hwservice:hwservice_manager { add find };
++#neverallow * default_android_hwservice:hwservice_manager { add find };
+ 
+ # Looking up the base class/interface of all HwBinder services is a bad idea.
+ # hwservicemanager currently offer such lookups only to make it so that security
+diff --git a/vendor/hal_nfc_default.te b/vendor/hal_nfc_default.te
+index c13baa7..afda861 100644
+--- a/vendor/hal_nfc_default.te
++++ b/vendor/hal_nfc_default.te
+@@ -1,5 +1,13 @@
++type nfc_vendor_data_file, file_type, data_file_type;
++
+ type hal_nfc_default, domain;
+ hal_server_domain(hal_nfc_default, hal_nfc)
+ 
+ type hal_nfc_default_exec, exec_type, vendor_file_type, file_type;
+ init_daemon_domain(hal_nfc_default)
++
++allow hal_nfc_default default_android_hwservice:hwservice_manager { add find }; 
++
++#============= hal_nfc_default ==============
++allow hal_nfc_default nfc_vendor_data_file:dir { add_name read write search remove_name};
++allow hal_nfc_default nfc_vendor_data_file:file { getattr open create read write unlink};

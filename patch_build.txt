@@ -1,0 +1,13 @@
+diff --git a/core/tasks/check_boot_jars/package_whitelist.txt b/core/tasks/check_boot_jars/package_whitelist.txt
+old mode 100644
+new mode 100755
+index 15b9990..ad9e405
+--- a/core/tasks/check_boot_jars/package_whitelist.txt
++++ b/core/tasks/check_boot_jars/package_whitelist.txt
+@@ -237,3 +237,6 @@ org\.apache\.xalan\.xslt
+ # Packages in the google namespace across all bootclasspath jars.
+ com\.google\.android\..*
+ com\.google\.vr\.platform.*
++
++com\.nxp\..*
++
