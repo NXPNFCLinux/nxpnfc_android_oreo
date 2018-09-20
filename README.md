@@ -5,7 +5,7 @@ It only applies to Oreo Android versions (for other releases see appropriate rep
 [Nougat](https://github.com/NXPNFCLinux/nxpnfc_android_nougat) / [Marshmallow](https://github.com/NXPNFCLinux/nxpnfc_android_marshmallow) / [Lollipop](https://github.com/NXPNFCLinux/nxpnfc_android_lollipop) / [Kitkat](https://github.com/NXPNFCLinux/nxpnfc_android_kitkat)).
 
 
-Information about NXP NFC Controller can be found on [NXP website](http://www.nxp.com/products/identification_and_security/nfc_and_reader_ics/nfc_controller_solutions/#overview).
+Information about PN7150 NFC Controller can be found on [NXP website](https://www.nxp.com/products/identification-and-security/nfc/nfc-reader-ics/pn7150-high-performance-nfc-controller-with-integrated-firmware-for-home-automation-applications:PN7150).
 
 Further details about the stack and integration guidelines [here](https://www.nxp.com/docs/en/application-note/AN11690.pdf).
 
