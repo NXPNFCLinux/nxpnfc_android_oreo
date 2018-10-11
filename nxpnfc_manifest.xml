@@ -7,5 +7,5 @@
   <project path="NxpNfcAndroid/NfcAndroid_Nfc"              name="nfcandroid/NfcAndroid_Nfc"       remote="CodeAurora" revision="refs/tags/NFC_NCIHALx_AR0054.8.3.0_O_OpnSrc"/>
   <project path="NxpNfcAndroid/NfcAndroid_Vendor"           name="nfcandroid/NfcAndroid_Vendor"    remote="CodeAurora" revision="refs/tags/NFC_NCIHALx_AR0054.8.3.0_O_OpnSrc"/>
   <project path="NxpNfcAndroid/NfcAndroid_Base"             name="nfcandroid/NfcAndroid_Base"      remote="CodeAurora" revision="refs/tags/NFC_NCIHALx_AR0054.8.3.0_O_OpnSrc"/>
-  <project path="NxpNfcAndroid/"                            name="nfcncisw/nxpnfc_android_oreo"    remote="github_nfc" revision="master"/>
+  <project path="NxpNfcAndroid/"                            name="NXPNFCLinux/nxpnfc_android_oreo"    remote="github_nfc" revision="master"/>
 </manifest>
